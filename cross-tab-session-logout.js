@@ -4,15 +4,20 @@
  * and open the template in the editor.
  */
 
+//this function will execute when any thing will add to the localStorage ,
+//then it will match key that is added to the localStorage
 
 // transfers sessionStorage from one tab to another
 var sessionStorage_transfer = function (event) {
+
     if (!event) {
         event = window.event;
     } // ie suq
     if (!event.newValue)
         return;          // do nothing if no value to work with
-    if (event.key == 'logoutAdmin') {
+    if (event.key == 'logoutAdmin') {//
+
+        console.log(window.location);
 
         sessionStorage.removeItem('SuperAdminLoggedIn');
         sessionStorage.removeItem('AdminLoggedIn');
@@ -27,10 +32,10 @@ var sessionStorage_transfer = function (event) {
         sessionStorage.removeItem('params');
         sessionStorage.removeItem('stateUrl');
         sessionStorage.removeItem('state');
-        
+
         localStorage.removeItem('logoutAdmin'); // <- could do short timeout as well.
-        
-        location.href = 'http://smartdata.sdd.freightalia.com/admin';
+
+        location.href = window.location.origin + '' + window.location.pathname;
 
     } else if (event.key == 'logoutClient') {
 
@@ -45,9 +50,18 @@ var sessionStorage_transfer = function (event) {
 
         localStorage.removeItem('logoutClient');
 
-        location.href = 'http://smartdata.sdd.freightalia.com/#/login';
+        location.href = window.location.origin + '' + window.location.pathname;
 
 
+    } else if (event.key == 'login') { //it will execute when login sucess and set data to sessionStorage        
+
+        var sessionData = JSON.parse(localStorage.login);
+        for (var key in sessionData)
+        {
+            sessionStorage.setItem(key, sessionData[key]);
+        }
+        
+        localStorage.removeItem('login');
     }
 };
 
